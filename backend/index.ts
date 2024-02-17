@@ -13,6 +13,10 @@ const pusher = new Pusher(process.env.PUSHER_APP_KEY, {
   cluster: process.env.PUSHER_APP_CLUSTER,
 });
 
+process.on('SIGINT', _ => {
+  relay.unexport();
+});
+
 pusher.subscribe('garage-door').bind('toggle', (data: Message) => {
   console.log('Received toggle:', data.message);
   relay.writeSync(relay.readSync() === 0 ? 1 : 0);
