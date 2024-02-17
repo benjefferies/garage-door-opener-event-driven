@@ -1,4 +1,7 @@
 import Pusher from 'pusher-js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 type Message = {
   message: string;

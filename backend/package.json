@@ -9,12 +9,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.6"
   },
   "dependencies": {
     "ts-node": "^10.9.2",
-    "@types/node": "^20.10.6",
-    "pusher-js": "^8.4.0-rc2"
+    "pusher-js": "^8.4.0-rc2",
+    "dotenv": "^16.3.1"
   },
   "bin": {
     "garage-door": "./bin/run.js"
