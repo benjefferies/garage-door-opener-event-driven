@@ -2,7 +2,7 @@ import Pusher from 'pusher-js';
 import dotenv from 'dotenv';
 import { Gpio } from 'onoff';
 const relay = new Gpio(14, 'out');
-const detect = new Gpio(4, 'in', 'both');
+const detect = new Gpio(26, 'in', 'both');
 
 dotenv.config();
 
