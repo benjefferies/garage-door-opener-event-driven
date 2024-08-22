@@ -4,5 +4,7 @@ declare namespace NodeJS {
         PUSHER_APP_KEY: string;
         PUSHER_APP_SECRET: string;
         PUSHER_APP_CLUSTER: string;
+        NEXT_PUBLIC_PUSHER_APP_KEY: string;
+        NEXT_PUBLIC_PUSHER_APP_CLUSTER: string;
     }
 }

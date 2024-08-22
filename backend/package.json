@@ -15,8 +15,10 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "debounce": "^2.1.0",
     "dotenv": "^16.3.1",
     "onoff": "^6.0.3",
+    "pusher": "^5.2.0",
     "pusher-js": "^8.4.0-rc2",
     "ts-node": "^10.9.2"
   },

@@ -1,34 +1,57 @@
-import Pusher from 'pusher-js';
-import dotenv from 'dotenv';
-import { Gpio } from 'onoff';
-const relay = new Gpio(14, 'out');
-const detect = new Gpio(26, 'in', 'both');
+import debounce from "debounce";
+import dotenv from "dotenv";
+import { Gpio } from "onoff";
+import Pusher from "pusher";
+import PusherClient from "pusher-js";
 
 dotenv.config();
 
-type Message = {
-  message: string;
-};
+const relay = new Gpio(parseInt(process.env.GPIO_OUT), "out");
+const detect = new Gpio(parseInt(process.env.GPIO_IN), "in", "both");
 
-const pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-  cluster: process.env.PUSHER_APP_CLUSTER,
-});
-
-process.on('SIGINT', _ => {
+process.on("SIGINT", (_) => {
   detect.unexport();
   relay.unexport();
+  process.exit();
 });
 
-pusher.subscribe('garage-door').bind('toggle', (data: Message) => {
-  console.log('Received toggle:', data.message);
-  relay.writeSync(relay.readSync() === 0 ? 1 : 0);
-});
+const options: Pusher.Options = {
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+};
 
+const pusher = new Pusher(options);
+const pusherClient = new PusherClient(options.key, options);
+
+const sendState = debounce((state: State) => {
+  console.log("Sending state", state);
+  pusher.trigger("cache-garage-door", "state", state);
+}, 500);
+
+pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
+  console.log("Received toggle", data);
+  relay.writeSync(1);
+  await new Promise((resolve) => setTimeout(resolve, 1_000));
+  relay.writeSync(0);
+  const state: State = {
+    ...data,
+    isOpen: detect.readSync() === 1,
+  };
+  sendState(state);
+});
 
 detect.watch((err, value) => {
   if (err) {
     throw err;
   }
 
-  console.log('Button pressed:', value);
+  const state: State = {
+    timestamp: new Date().toISOString(),
+    isOpen: value === 1,
+  };
+  console.log("Detect", value);
+  sendState.clear();
+  sendState(state);
 });
