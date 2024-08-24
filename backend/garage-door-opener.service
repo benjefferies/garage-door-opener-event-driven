@@ -1,0 +1,13 @@
+[Unit]
+Description=Garage door opener
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/backend
+ExecStart=/home/pi/backend/bin/run.js
+Restart=always
+User=pi
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=multi-user.target

@@ -40,9 +40,9 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex justify-between items-center p-4">
-        <h1 className="text-4xl">Garage Door Opener</h1>
+        <h1 className="sm:text-4xl text-xl">Garage Door Opener</h1>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-nowrap	"
           onClick={() => {
             user.signOut();
             router.push("/login");
@@ -51,9 +51,9 @@ export default function Home() {
           Sign out
         </button>
       </header>
-      <main className={`p-24 flex grow`}>
+      <main className={`sm:p-24 p-4 flex grow`}>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full text-9xl"
+          className="bg-blue-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full text-4xl sm:text-9xl"
           onClick={() => {
             sendToggleEvent(user.username);
           }}
