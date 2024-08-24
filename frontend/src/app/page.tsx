@@ -38,7 +38,7 @@ export default function Home() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-dvh">
       <header className="flex justify-between items-center p-4">
         <h1 className="sm:text-4xl text-xl">Garage Door Opener</h1>
         <div className="flex space-x-2">
