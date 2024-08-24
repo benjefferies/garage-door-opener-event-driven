@@ -41,15 +41,25 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <header className="flex justify-between items-center p-4">
         <h1 className="sm:text-4xl text-xl">Garage Door Opener</h1>
-        <button
-          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-nowrap	"
-          onClick={() => {
-            user.signOut();
-            router.push("/login");
-          }}
-        >
-          Sign out
-        </button>
+        <div className="flex space-x-2">
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-nowrap	"
+            onClick={() => {
+              router.push("/profile");
+            }}
+          >
+            Profile
+          </button>
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-nowrap	"
+            onClick={() => {
+              user.signOut();
+              router.push("/login");
+            }}
+          >
+            Sign out
+          </button>
+        </div>
       </header>
       <main className={`sm:p-24 p-4 flex grow`}>
         <button
