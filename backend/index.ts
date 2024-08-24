@@ -55,3 +55,10 @@ detect.watch((err, value) => {
   sendState.clear();
   sendState(state);
 });
+
+// Read initial state
+const state: State = {
+  timestamp: new Date().toISOString(),
+  isOpen: detect.readSync() === 1,
+};
+sendState(state);
