@@ -30,7 +30,7 @@ const sendState = debounce((state: State) => {
   pusher.trigger("cache-garage-door", "state", state);
 }, 500);
 
-const isOpen = (value: number) => value === 0;
+const isOpen = (value: number) => value === 1;
 
 pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
   console.log("Received toggle", data);
@@ -39,7 +39,7 @@ pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
   relay.writeSync(0);
   const state: State = {
     ...data,
-    isOpen: detect.readSync() === 1,
+    isOpen: isOpen(detect.readSync()),
   };
   sendState(state);
 });
