@@ -3,8 +3,8 @@ Description=Garage door opener
 After=network.target
 
 [Service]
-WorkingDirectory=/home/pi/backend
-ExecStart=/home/pi/backend/bin/run.js
+WorkingDirectory=/home/pi/garage-door-opener-event-driven/backend
+ExecStart=/home/pi/garage-door-opener-event-driven/backend/bin/run.js
 Restart=always
 User=pi
 Environment=DISPLAY=:0
