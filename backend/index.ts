@@ -30,6 +30,8 @@ const sendState = debounce((state: State) => {
   pusher.trigger("cache-garage-door", "state", state);
 }, 500);
 
+const isOpen = (value: number) => value === 0;
+
 pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
   console.log("Received toggle", data);
   relay.writeSync(1);
@@ -49,7 +51,7 @@ detect.watch((err, value) => {
 
   const state: State = {
     timestamp: new Date().toISOString(),
-    isOpen: value === 1,
+    isOpen: isOpen(value),
   };
   console.log("Detect", value);
   sendState.clear();
@@ -59,6 +61,6 @@ detect.watch((err, value) => {
 // Read initial state
 const state: State = {
   timestamp: new Date().toISOString(),
-  isOpen: detect.readSync() === 1,
+  isOpen: isOpen(detect.readSync()),
 };
 sendState(state);
