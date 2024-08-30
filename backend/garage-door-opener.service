@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/home/pi/garage-door-opener-event-driven/backend
+ExecStartPre=/usr/bin/git pull
 ExecStart=/home/pi/garage-door-opener-event-driven/backend/bin/run.js
 Restart=always
 User=pi
