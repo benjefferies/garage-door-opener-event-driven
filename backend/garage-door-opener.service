@@ -9,6 +9,8 @@ ExecStart=/home/pi/garage-door-opener-event-driven/backend/bin/run.js
 Restart=always
 User=pi
 Environment=DISPLAY=:0
+RestartSec=5s
+
 
 [Install]
 WantedBy=multi-user.target
