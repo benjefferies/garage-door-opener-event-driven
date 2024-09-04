@@ -9,6 +9,9 @@ dotenv.config();
 const relay = new Gpio(parseInt(process.env.GPIO_OUT), "out");
 const detect = new Gpio(parseInt(process.env.GPIO_IN), "in", "both");
 
+let openTimestamp: Date | undefined;
+const bootTimestamp = new Date();
+
 process.on("SIGINT", (_) => {
   detect.unexport();
   relay.unexport();
@@ -40,6 +43,8 @@ pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
   const state: State = {
     ...data,
     isOpen: isOpen(detect.readSync()),
+    openTimestamp,
+    bootTimestamp,
   };
   sendState(state);
 });
@@ -49,9 +54,17 @@ detect.watch((err, value) => {
     throw err;
   }
 
+  if (!isOpen(value)) {
+    openTimestamp = undefined;
+  } else if (!openTimestamp) {
+    openTimestamp = new Date();
+  }
+
   const state: State = {
     timestamp: new Date().toISOString(),
     isOpen: isOpen(value),
+    openTimestamp,
+    bootTimestamp,
   };
   console.log("Detect", value);
   sendState.clear();
@@ -62,5 +75,6 @@ detect.watch((err, value) => {
 const state: State = {
   timestamp: new Date().toISOString(),
   isOpen: isOpen(detect.readSync()),
+  bootTimestamp,
 };
 sendState(state);

@@ -7,4 +7,6 @@ type State = {
   timestamp: string;
   user?: string;
   isOpen: boolean;
+  openTimestamp?: Date
+  bootTimestamp: Date;
 };
