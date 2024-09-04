@@ -71,10 +71,15 @@ detect.watch((err, value) => {
   sendState(state);
 });
 
+const bootIsOpen = isOpen(detect.readSync());
+if (bootIsOpen) {
+  openTimestamp = new Date();
+}
+
 // Read initial state
 const state: State = {
   timestamp: new Date().toISOString(),
-  isOpen: isOpen(detect.readSync()),
+  isOpen: bootIsOpen,
   bootTimestamp,
 };
 sendState(state);
