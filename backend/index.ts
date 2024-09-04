@@ -40,9 +40,13 @@ pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
   relay.writeSync(1);
   await new Promise((resolve) => setTimeout(resolve, 1_000));
   relay.writeSync(0);
+  const toggleIsOpen = isOpen(detect.readSync());
+  if (!openTimestamp && toggleIsOpen) {
+    openTimestamp = new Date();
+  }
   const state: State = {
     ...data,
-    isOpen: isOpen(detect.readSync()),
+    isOpen: toggleIsOpen,
     openTimestamp,
     bootTimestamp,
   };
