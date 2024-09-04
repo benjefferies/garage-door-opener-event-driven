@@ -1,3 +1,4 @@
+import sgMail from "@sendgrid/mail";
 import debounce from "debounce";
 import dotenv from "dotenv";
 import { Gpio } from "onoff";
@@ -41,7 +42,9 @@ pusherClient.subscribe("garage-door").bind("toggle", async (data: Message) => {
   await new Promise((resolve) => setTimeout(resolve, 1_000));
   relay.writeSync(0);
   const toggleIsOpen = isOpen(detect.readSync());
-  if (!openTimestamp && toggleIsOpen) {
+  if (!toggleIsOpen) {
+    openTimestamp = undefined;
+  } else if (!openTimestamp) {
     openTimestamp = new Date();
   }
   const state: State = {
@@ -87,3 +90,27 @@ const state: State = {
   bootTimestamp,
 };
 sendState(state);
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const msg = {
+  to: process.env.TO_EMAIL,
+  from: process.env.FROM_EMAIL,
+  subject: "Garage Door Opener - Boot Notification",
+  text: `Garage door is ${
+    bootIsOpen ? "open" : "closed"
+  } at boot. Time of boot: ${bootTimestamp.toISOString()}`,
+  html: `<strong>Garage door is ${
+    bootIsOpen ? "open" : "closed"
+  } at boot. Time of boot: ${bootTimestamp.toISOString()}</strong>`,
+};
+
+sgMail
+  .send(msg)
+  .then((response) => {
+    console.log(response[0].statusCode);
+    console.log(response[0].headers);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
