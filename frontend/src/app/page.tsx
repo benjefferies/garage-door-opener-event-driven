@@ -12,6 +12,7 @@ const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY, {
 
 export default function Home() {
   const [isOpened, setIsOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     require("@passageidentity/passage-elements/passage-auth");
   }, []);
@@ -35,15 +36,16 @@ export default function Home() {
     const { isOpen, ...rest } = data;
     console.log("Received state", { ...rest, isOpen });
     setIsOpened(isOpen);
+    setLoading(false);
   });
 
   return (
-    <div className="flex flex-col h-dvh">
+    <div className="flex flex-col h-dvh bg-gray-900">
       <header className="flex justify-between items-center p-4">
-        <h1 className="sm:text-4xl text-xl">Garage Door Opener</h1>
+        <h1 className="text-white sm:text-4xl text-xl">Garage Door Opener</h1>
         <div className="flex space-x-2">
           <button
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-nowrap	"
+            className="bg-gray-700 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded text-nowrap"
             onClick={() => {
               router.push("/profile");
             }}
@@ -51,7 +53,7 @@ export default function Home() {
             Profile
           </button>
           <button
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-nowrap	"
+            className="bg-gray-700 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded text-nowrap	"
             onClick={() => {
               user.signOut();
               router.push("/login");
@@ -63,12 +65,17 @@ export default function Home() {
       </header>
       <main className={`sm:p-24 p-4 flex grow`}>
         <button
-          className="bg-blue-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full text-4xl sm:text-9xl"
+          className="bg-gray-700 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-3xl w-full text-4xl sm:text-9xl"
           onClick={() => {
+            setLoading(true);
             sendToggleEvent(user.username);
+            setTimeout(() => {
+              setLoading(false);
+            }, 5000);
           }}
         >
-          {isOpened ? "Close" : "Open"}
+          {!loading && (isOpened ? "Close" : "Open")}
+          {loading && "Loading..."}
         </button>
       </main>
     </div>

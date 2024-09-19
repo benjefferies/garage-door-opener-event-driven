@@ -1,0 +1,4 @@
+creation_rules:
+    - age: >-
+        age1td6m8ww7u4l605ss58kksw70dj84vh9vejlrctzaezquvxxheuxsxcgdc4
+      path_regex: .*.dotenv

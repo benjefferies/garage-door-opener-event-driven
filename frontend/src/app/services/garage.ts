@@ -12,7 +12,6 @@ const options: Pusher.Options = {
 const pusher = new Pusher(options);
 
 export async function sendToggleEvent(user: string) {
-  console.log("Sending toggle event");
   await pusher.trigger("garage-door", "toggle", {
     message: {
       timestamp: new Date().toISOString(),
