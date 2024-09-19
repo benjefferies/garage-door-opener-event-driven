@@ -16,6 +16,16 @@ export default function Home() {
   useEffect(() => {
     require("@passageidentity/passage-elements/passage-auth");
   }, []);
+
+  useEffect(() => {
+    pusher.subscribe("cache-garage-door").bind("state", (data: State) => {
+      const { isOpen, ...rest } = data;
+      console.log("Received state", { ...rest, isOpen });
+      setIsOpened(isOpen);
+      setLoading(false);
+    });
+  }, []);
+
   const user = useCurrentUser();
   const router = useRouter();
 
@@ -31,13 +41,6 @@ export default function Home() {
     // redirect to login
     return redirect("/login");
   }
-
-  pusher.subscribe("cache-garage-door").bind("state", (data: State) => {
-    const { isOpen, ...rest } = data;
-    console.log("Received state", { ...rest, isOpen });
-    setIsOpened(isOpen);
-    setLoading(false);
-  });
 
   return (
     <div className="flex flex-col h-dvh bg-gray-900">
