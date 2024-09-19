@@ -21,11 +21,12 @@
     "@gluestack-ui/switch": "^0.1.22",
     "@gluestack-ui/themed": "^1.1.51",
     "@gluestack-ui/toast": "^1.0.7",
-    "@passageidentity/passage-react-native": "^0.7.1",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/netinfo": "^11.4.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "debounce": "^2.1.1",
     "expo": "~51.0.28",
+    "expo-build-properties": "~0.12.5",
     "expo-constants": "~16.0.2",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
@@ -57,6 +58,9 @@
   },
   "private": true,
   "jest": {
+    "setupFiles": [
+      "./jestSetup.ts"
+    ],
     "preset": "jest-expo",
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|@gluestack-ui/*|@gluestack-style/*)"

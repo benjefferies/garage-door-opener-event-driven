@@ -1,0 +1,4 @@
+appId: space.mygaragedoor.mobile
+---
+- launchApp
+- assertVisible: 'Welcome!'

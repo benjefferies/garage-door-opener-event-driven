@@ -1,14 +1,14 @@
-// Settings.test.js
-
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import Settings from "../(tabs)/settings";
-import { ThemeContext } from "../_layout";
+import Settings from "../app/(tabs)/Settings";
+import { ThemeContext } from "../app/_layout";
+
+jest.mock("@react-native-async-storage/async-storage");
 
 describe("<Settings />", () => {
   test("renders correctly with light mode", () => {
     const toggleColorModeMock = jest.fn();
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <ThemeContext.Provider
         value={{ colorMode: "light", toggleColorMode: toggleColorModeMock }}
       >
